@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "AutoSuivi TN",
-    "slug": "abacusai-mobile-apps",
+    "slug": "autosuivi-tn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -61,6 +61,6 @@
         "projectId": "a52132e3-7b24-4c1b-9315-46625e580b8a"
       }
     },
-    "owner": "abacus.ai"
+   "owner": "TON_USERNAME_EXPO"
   }
 }

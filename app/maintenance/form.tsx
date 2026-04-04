@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useVehicle } from '../../src/presentation/context/VehicleContext';
-import { InputField, GradientButton, GlassCard, CrossPlatformDatePicker } from '../../src/presentation/components';
+import { InputField, GradientButton, CustomAlert, GlassCard, CrossPlatformDatePicker } from '../../src/presentation/components';
 import { Colors, Spacing, BorderRadius, MaintenanceType, MaintenanceLabels } from '../../src/core/constants';
 
 export default function MaintenanceFormScreen() {
@@ -27,6 +27,12 @@ export default function MaintenanceFormScreen() {
     cost: '',
     notes: '',
   });
+  const [alertVisible, setAlertVisible] = useState(false);
+      const [alertConfig, setAlertConfig] = useState<{ title: string; message: string; type: 'success' | 'error' }>({
+          title: '',
+          message: '',
+          type: 'success',
+        });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = (): boolean => {
@@ -64,7 +70,12 @@ export default function MaintenanceFormScreen() {
       });
       router.back();
     } catch (error) {
-      Alert.alert('Erreur', 'Impossible d\'enregistrer la maintenance');
+        setAlertConfig({
+        title: 'error',
+        message:'Impossible d\'enregistrer la maintenance',
+        type: 'error',
+      });
+      setAlertVisible(true);
     } finally {
       setSaving(false);
     }
@@ -84,7 +95,13 @@ export default function MaintenanceFormScreen() {
       year: 'numeric',
     });
   };
-
+  
+  const handleAlertClose = () => {
+    setAlertVisible(false);
+    if (alertConfig.type === 'success') {
+      router.back();
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -190,6 +207,14 @@ export default function MaintenanceFormScreen() {
             loading={saving}
             style={styles.saveButton}
           />
+
+          <CustomAlert
+                              visible={alertVisible}
+                              title={alertConfig.title}
+                              message={alertConfig.message}
+                              type={alertConfig.type}
+                              onClose={handleAlertClose}
+                            />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

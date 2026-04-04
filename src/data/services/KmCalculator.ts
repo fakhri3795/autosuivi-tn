@@ -169,6 +169,7 @@ export const getUpcomingMaintenanceItems = (
   currentMileage: number,
   stats: MileageStats,
   drivingType: DrivingType = 'mixte',
+  intervals?: any,
   customIntervals?: CustomIntervals
 ): PredictionItem[] => {
   const items: PredictionItem[] = [];

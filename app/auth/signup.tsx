@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, router } from 'expo-router';
 import { useAuth } from '../../src/presentation/context/AuthContext';
-import { InputField, GradientButton } from '../../src/presentation/components';
+import { InputField, GradientButton, CustomAlert } from '../../src/presentation/components';
 import { Colors, Spacing } from '../../src/core/constants';
 
 export default function SignupScreen() {
@@ -21,6 +21,12 @@ export default function SignupScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertConfig, setAlertConfig] = useState<{ title: string; message: string; type: 'success' | 'error' }>({
+      title: '',
+      message: '',
+      type: 'success',
+    });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = (): boolean => {
@@ -68,15 +74,30 @@ export default function SignupScreen() {
       if (success) {
         router.replace('/tabs');
       } else {
-        Alert.alert('Erreur', 'Inscription échouée');
+        setAlertConfig({
+        title: 'Succès',
+        message: 'Inscription échouée',
+        type: 'success',
+      });
+      setAlertVisible(true);
       }
     } catch (error) {
-      Alert.alert('Erreur', 'Une erreur est survenue');
+      setAlertConfig({
+        title: 'Erreur',
+        message: 'Une erreur est survenue',
+        type: 'error',
+      });
+      setAlertVisible(true);
     } finally {
       setLoading(false);
     }
   };
-
+  const handleAlertClose = () => {
+    setAlertVisible(false);
+    if (alertConfig.type === 'success') {
+      router.back();
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -149,6 +170,13 @@ export default function SignupScreen() {
               loading={loading}
               style={styles.button}
             />
+            <CustomAlert
+                    visible={alertVisible}
+                    title={alertConfig.title}
+                    message={alertConfig.message}
+                    type={alertConfig.type}
+                    onClose={handleAlertClose}
+                  />
 
             <View style={styles.linkContainer}>
               <Text style={styles.linkText}>Déjà un compte ? </Text>

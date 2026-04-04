@@ -29,7 +29,8 @@ export default function MaintenanceScreen() {
     maintenanceRecords,
     activeVehicle?.currentMileage ?? 0,
     mileageStats,
-    'mixte'
+    'mixte',
+    'maintenanceIntervals'
   );
 
   const urgencyScore = maintenancePrediction?.urgencyScore ?? 0;
@@ -80,7 +81,7 @@ export default function MaintenanceScreen() {
       <Text style={styles.emptySubtitle}>Enregistrez votre première maintenance</Text>
     </View>
   );
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -113,11 +114,11 @@ export default function MaintenanceScreen() {
             <Text style={styles.predictionSubtitle}>
               Estimation: ~{maintenancePrediction?.daysRemaining ?? 0} jours
             </Text>
-            <View style={styles.factorsRow}>
+          {/*  <View style={styles.factorsRow}>
               <Text style={styles.factorText}>km: {maintenancePrediction?.factors?.kmFactor ?? 0}%</Text>
               <Text style={styles.factorText}>temps: {maintenancePrediction?.factors?.timeFactor ?? 0}%</Text>
-              <Text style={styles.factorText}>conduite: {maintenancePrediction?.factors?.drivingFactor ?? 0}%</Text>
-            </View>
+              <Text style={styles.factorText}>conduite: {maintenancePrediction?.factors?.drivingFactor ?? 0}%</Text> 
+            </View> */}
           </View>
           <CircularGauge
             value={urgencyScore}

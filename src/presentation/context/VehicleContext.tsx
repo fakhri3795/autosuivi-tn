@@ -10,7 +10,7 @@ import {
   mockMaintenanceRecords,
   mockDeadlines,
   calculateMileageStats,
-} from '../../data/datasources/MockDataSource';
+} from '../../data/datasources/FirebaseDataSource';
 import { getFullPrediction, DrivingType, CustomIntervals } from '../../data/services/KmCalculator';
 
 interface VehicleWithData {

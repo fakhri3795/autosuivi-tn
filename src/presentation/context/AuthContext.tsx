@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../../domain/entities/User';
-import { mockUser } from '../../data/datasources/MockDataSource';
+import { mockUser } from '../../data/datasources/FirebaseDataSource';
 
 interface AuthContextType {
   user: User | null;
@@ -24,10 +24,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     checkAuth();
   }, []);
 
-  const checkAuth = async () => {
+ const checkAuth = async () => {
     try {
       const storedAuth = await AsyncStorage.getItem(AUTH_KEY);
-      if (storedAuth) {
+      if (storedAuth && storedAuth !== "undefined") { // Sécurité supplémentaire
         const userData = JSON.parse(storedAuth);
         setUser(userData);
       }
@@ -70,7 +70,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
       return false;
     } catch (error) {
-      console.error('Signup error:', error);
+      console.error(`Détails de l'erreur :, error.message`);
       return false;
     }
   };
